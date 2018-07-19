@@ -6,11 +6,18 @@
 </head>
 
 <body>
-  <h1>Welcome to the chat realtime app</h1>
+  <p>welcome to chat app</p>
+  <!-- list messages -->
+  <ol id="messages"></ol>
+  <form id="message-form">
+    <input type="text" name="message" placeholder="Message" />
+    <button>Send</button>
+  </form>
   <!-- Load javascript socket.io library -->
   <script src="/socket.io/socket.io.js"></script>
   <!-- open connection client with server socket.io -->
-  <script src="/js/index.js"></script>
+  <script src="./js/libs/jquery-3.3.1.min.js"></script>
+  <script src="./js/index.js"></script>
 </body>
 
 </html>
