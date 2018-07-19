@@ -7,6 +7,18 @@
 
 <body>
   <h1>Welcome to the chat realtime app</h1>
+  <!-- Load javascript socket.io library -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- open connection client with server socket.io -->
+  <script>
+    var socket = io(); /* make request from the client to the server to open up a web socket keep open*/
+    socket.on('connect', () => {
+      console.log('Connect to server');
+    });
+    socket.on('disconnect', () => {
+      console.log('disconnect from server');
+    });
+  </script>
 </body>
 
 </html>
