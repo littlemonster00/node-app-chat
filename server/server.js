@@ -13,6 +13,22 @@ app.use(express.static(pathPublic));
 
 io.on('connection', (socket) => {
     console.log('New connected');
+
+    socket.emit('newEmail', {
+        from: 'sang.lequang97@gmail.com',
+        text: 'Hello, welcome to web socket!',
+        createAt: 120393,
+    })
+    socket.on('createMessage', (message) => {
+        console.log('message', message);
+    });
+    socket.emit('newMessage', {
+        from: 'sang',
+        text: 'sangle quang what do you do',
+        createAt: 943905
+    })
+
+
     socket.on('disconnect', () => {
         console.log('User was disconnected');
     })
