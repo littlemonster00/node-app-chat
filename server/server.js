@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-const pathPublic = path.join(__dirname,'../public');
+const pathPublic = path.join(__dirname, '../public');
 
 const port = process.env.PORT || 3000;
 var app = express();
@@ -12,26 +12,20 @@ var io = socketIO(server);
 app.use(express.static(pathPublic));
 
 io.on('connection', (socket) => {
-    console.log('New connected');
+  console.log('New connected');
 
-    socket.emit('newEmail', {
-        from: 'sang.lequang97@gmail.com',
-        text: 'Hello, welcome to web socket!',
-        createAt: 120393,
-    })
-    socket.on('createMessage', (message) => {
-        console.log('message', message);
+  socket.on('createMessage', (message) => {
+    console.log('message', message);
+    // emit every single connection
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime() 
     });
-    socket.emit('newMessage', {
-        from: 'sang',
-        text: 'sangle quang what do you do',
-        createAt: 943905
-    })
-
-
-    socket.on('disconnect', () => {
-        console.log('User was disconnected');
-    })
+  });
+  socket.on('disconnect', () => {
+    console.log('User was disconnected');
+  })
 });
 
 server.listen(port, () => console.log(`Server is up ${port}`));
