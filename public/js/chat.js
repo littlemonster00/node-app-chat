@@ -1,5 +1,20 @@
-
 var socket = io(); /* make request from the client to the server to open up a web socket keep open*/
+
+function scrollToBottom () {
+  // Selectors
+  var messages = jQuery('#messages');
+  var newMessage = messages.children('li:last-child')
+  // Heights
+  var clientHeight = messages.prop('clientHeight');
+  var scrollTop = messages.prop('scrollTop');
+  var scrollHeight = messages.prop('scrollHeight');
+  var newMessageHeight = newMessage.innerHeight();
+  var lastMessageHeight = newMessage.prev().innerHeight();
+
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    messages.scrollTop(scrollHeight);
+  }
+}
 socket.on('connect', function () {
 	console.log('Connect to server');
 
@@ -11,7 +26,8 @@ socket.on('connect', function () {
       from: 'user',
       createdAt: formattedTime
     });
-    jQuery('#messages').append(html)
+    jQuery('#messages').append(html);
+    scrollToBottom();
   });
 
   socket.on('newLocationMessage', function (message) {
@@ -23,6 +39,7 @@ socket.on('connect', function () {
       createdAt: formattedTime
     });
     jQuery('#messages').append(html);
+    scrollToBottom();
   });
 });
 
