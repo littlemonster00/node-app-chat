@@ -169,6 +169,12 @@
     margin-right: 10px;
   }
   
+  .message__body p{
+    padding: 5px;
+    background-color: rgba(201, 226, 247, 0.9);
+    border-radius: 5px;
+  }
+
   .message__title span {
     color: #999;
   }
