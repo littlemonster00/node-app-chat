@@ -6,6 +6,7 @@
   "author": "sang le quang <sang.lequang97@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
