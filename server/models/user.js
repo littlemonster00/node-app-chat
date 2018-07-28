@@ -30,7 +30,10 @@ const UserSchema = new Schema({
       type: mongoose.Schema.Types.String,
       required: true
     }
-  }]
+  }],
+  credit: {
+    type: mongoose.Schema.Types.ObjectId
+  }
 });
 
 // Transforms data to response client
@@ -110,7 +113,6 @@ UserSchema.methods.removeToken = function (token) {
       tokens: {token}
     }
   });
-
 }
 // Export Model mongoose
 var User = mongoose.model('User', UserSchema);
