@@ -16,6 +16,7 @@ const todo_get_id = require('./routes/todos_get_id');
 const todo_delete = require('./routes/todos_delete');
 const todo_update = require('./routes/todos_update');
 const credit_create = require('./routes/user_create_credit');
+const user_recharge = require('./routes/user_recharge');
 
 
 
@@ -38,6 +39,7 @@ app.use(todo_get_id.router);
 app.use(todo_delete.router);
 app.use(todo_update.router);
 app.use(credit_create.router);
+app.use(user_recharge.router);
 
 // app.get('/users', (req, res) => {
 //   res.sendFile()

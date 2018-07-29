@@ -1,27 +1,28 @@
 const express = require('express');
-const {Credit} = require('./../models/credit');
-const {authenticate} = require('./../middleware/authenticate');
-const {User} = require('./../models/user');
+const { Credit } = require('./../models/credit');
+const { authenticate } = require('./../middleware/authenticate');
+const { User } = require('./../models/user');
 const router = express.Router();
 
 router.post('/users/creditcreate', authenticate, (req, res) => {
   // we have user and token when authenticate completed.
   const _id = req.user._id;
-  console.log(_id)
   var credit = new Credit({
+    numberCard: req.body.numberCard,
     userHolder: _id
   });
+  // save credit card append credit card into user.credits array
   credit.save().then((credit) => {
-    var update = {
-      "credit": credit._id
-    };
-    User.findOneAndUpdate({_id}, update, {new: true}).then((user) => {
-      // res anything you want (user, credit,...)
-       res.status(200).send({credit: user.credit});
-    })
-  }).catch((err) => {
+    User.findById(_id)
+      .then((user) => {
+        return user.appendCredit(credit._id); // return promise save() of mongoose
+      })
+      .then((user) => {
+        res.send(user.credits);
+      })
+  }).catch((err) => { // catch all of error saving
     res.status(400).send(err);
   });
 });
 
-module.exports = {router};
+module.exports = { router };
