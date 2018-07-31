@@ -4,6 +4,8 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+const {Credit} = require('./credit');
+
 var Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -32,7 +34,8 @@ const UserSchema = new Schema({
     }
   }],
   credits: [{
-    type: mongoose.Schema.Types.ObjectId
+    type: Schema.Types.ObjectId,
+    ref: 'Credit'
   }]
 });
 
@@ -54,17 +57,19 @@ UserSchema.methods.generateAuthToken = function () {
   });
 }
 
-UserSchema.methods.appendCredit = function (credit_id) {
+// input is object {numberCard: '1234'};
+UserSchema.methods.appendCredit = function (credit) {
   var user = this;
   try {
-    this.credits.push(credit_id);
+    this.credits.push(credit);
   } catch (error) {
-    console.log('object ://', error.toString());
+    return console.log('object ://', error.toString());
   }
   // return promise
   return user.save().then((user) => {
       return user;
   });
+
 }
 
 //Hashing password before it would be save
@@ -117,6 +122,17 @@ UserSchema.statics.findByToken = function (token) {
     'tokens.token': token,
     'tokens.access': 'auth'
   })
+}
+
+// Find by numberCard
+UserSchema.statics.findByNumberCard = function (query) {
+  var User = this;
+  return User.findOne({
+    '_id': query._id,
+    'credits.numberCard': query.numberCard
+  }).then((user) => {
+    return user.findOne({numberCard: query.numberCard})
+  });
 }
 
 // Find by credit

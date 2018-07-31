@@ -27,31 +27,21 @@ router.post('/users/recharge', authenticate, (req, res) => {
     new: true
   };
   // Find by numberCar provided by user
-  Credit.findOne(query).then((credit) => {
-    //console.log(credit)
-    // Check this credit for this account number
-    User.findByCredit(credit._id).then((user) => {
-      if (user[0]._id.toHexString() === req.user._id.toHexString()) {
-
-        // Update balance for user's card number.
-        Credit.findByIdAndUpdate(credit._id, update, option).then((credit) => {
-          // Send object include userholder and balance after update balance
-          var recharge = {
-            userHolder: req.user._id,
-            balance: credit.balance,
-            numberCard: credit.numberCard
-          }
-          res.status(200).send(recharge);
-        });
-      } else {
-        res.status(400).send({
-          message: 'Uncorrect number card'
-        });
+  var byNumberCard = {
+    _id: req.user._id,
+    numberCard: req.body.numberCard
+  }
+    // Update balance for user's card number.
+    Credit.findOneAndUpdate({numberCard: req.body.numberCard}, update, option)
+    .populate('userHolder')
+    .then((credit) => {
+      if(!credit) {
+        return res.status(400).send({message: 'Can not founn credit'});
       }
+      res.status(200).send(credit)
+    }).catch((err) => {
+      res.status(400).send(err);
     });
-  }).catch((err) => {
-    res.status(400).send(err)
-  });
-});
+  })
 
 module.exports = { router };

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const path = require('path');
 
+
 const {mongoose} = require('./db/mongoose'); /* connect mongodb */
 const pathPublic = path.join(__dirname, '../public');
 
@@ -17,7 +18,7 @@ const todo_delete = require('./routes/todos_delete');
 const todo_update = require('./routes/todos_update');
 const credit_create = require('./routes/user_create_credit');
 const user_recharge = require('./routes/user_recharge');
-
+const user_payment = require('./routes/user_payment');
 
 
 const port = process.env.PORT || 3000;
@@ -40,7 +41,7 @@ app.use(todo_delete.router);
 app.use(todo_update.router);
 app.use(credit_create.router);
 app.use(user_recharge.router);
-
+app.use(user_payment.router);
 // app.get('/users', (req, res) => {
 //   res.sendFile()
 // });
